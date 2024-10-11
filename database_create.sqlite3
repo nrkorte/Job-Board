@@ -1,0 +1,84 @@
+CREATE TABLE IF NOT EXISTS users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    email TEXT UNIQUE,
+    password TEXT
+);
+
+CREATE TABLE IF NOT EXISTS personal_info (
+    id INTEGER PRIMARY KEY,
+    full_name TEXT,
+    birthdate TEXT,
+    address_one TEXT,
+    address_two TEXT,
+    city TEXT,
+    state TEXT,
+    zip TEXT,
+    email TEXT UNIQUE,
+    phone TEXT,
+    preferred_contact TEXT,
+    FOREIGN KEY (email) REFERENCES users(email),
+    FOREIGN KEY (id) REFERENCES users(id)
+);
+
+CREATE TABLE IF NOT EXISTS demographics (
+    id INTEGER PRIMARY KEY,
+    sex TEXT,
+    legal_work TEXT,
+    veteran TEXT,
+    disability TEXT,
+    ethnicity TEXT,
+    race TEXT,
+    FOREIGN KEY (id) REFERENCES users(id)
+);
+
+CREATE TABLE IF NOT EXISTS job_preferences (
+    id INTEGER PRIMARY KEY,
+    job_type TEXT,
+    job_rho TEXT,
+    FOREIGN KEY (id) REFERENCES users(id)
+);
+
+CREATE TABLE IF NOT EXISTS education_history (
+    id INTEGER,
+    ind INTEGER,
+    name TEXT,
+    type TEXT,
+    city TEXT,
+    country TEXT,
+    start_date TEXT,
+    end_expec_date TEXT,
+    degree_type TEXT,
+    major TEXT,
+    minor TEXT,
+    concentration TEXT,
+    gpa DECIMAL(3, 2) CHECK (gpa >= 0 AND gpa <= 4),
+    PRIMARY KEY (id, ind),
+    FOREIGN KEY (id) REFERENCES users(id)
+);
+
+CREATE TABLE IF NOT EXISTS work_history (
+    id INTEGER,
+    title TEXT,
+    company TEXT,
+    city TEXT,
+    country TEXT,
+    manager_name TEXT,
+    phone TEXT,
+    can_contact TEXT,
+    start_date TEXT,
+    end_date TEXT,
+    current_employer TEXT,
+    duties TEXT,
+    reason_for_leaving TEXT,
+    PRIMARY KEY (id, company),
+    FOREIGN KEY (id) REFERENCES users(id)
+);
+
+CREATE TABLE IF NOT EXISTS user_files (
+    id INTEGER,
+    file_1 TEXT,
+    file_2 TEXT,
+    file_3 TEXT,
+    file_4 TEXT,
+    FOREIGN KEY (id) REFERENCES users(id)
+);

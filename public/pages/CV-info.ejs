@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your CV Information</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <%- include('./templates/main-nav') %>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="landing">Home</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="CV-info">CV Information</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="Jobs">Job Board</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="About">About</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ================================================= NAV ================================================= -->
+
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-3 sidebar">
+                <h4>Sections</h4>
+                <ul class="list-group">
+                    <li class="list-group-item"><a href="#" class="section-link" data-section="general">General</a></li>
+                    <li class="list-group-item"><a href="#" class="section-link" data-section="education">Education</a></li>
+                    <li class="list-group-item"><a href="#" class="section-link" data-section="experience">Experience</a></li>
+                    <li class="list-group-item"><a href="#" class="section-link" data-section="skills">Skills</a></li>
+                    <li class="list-group-item"><a href="#" class="section-link" data-section="certifications">Certifications</a></li>
+                    <li class="list-group-item"><a href="#" class="section-link" data-section="identity">Identity</a></li>
+                </ul>
+            </div>
+    
+            <!-- Main Content Area -->
+            <div class="col-md-9 content">
+                <h2 class="mb-4">CV Information</h2>
+                <form id="cvForm">
+                    <!-- The form fields will be dynamically generated here -->
+                    <div id="formFields">
+                        <div class="form-group">
+                            <label for="firstName">First Name</label>
+                            <input type="text" class="form-control" id="firstName" placeholder="Enter your first name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Last Name</label>
+                            <input type="text" class="form-control" id="lastName" placeholder="Enter your last name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="birthday">Birthday</label>
+                            <input type="date" class="form-control" id="birthday" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="addressLine1">Address Line 1</label>
+                            <input type="text" class="form-control" id="addressLine1" placeholder="Enter your address" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="addressLine2">Address Line 2 (optional)</label>
+                            <input type="text" class="form-control" id="addressLine2" placeholder="Enter additional address details">
+                        </div>
+                        <div class="form-group">
+                            <label for="town">Town</label>
+                            <input type="text" class="form-control" id="town" placeholder="Enter your town" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="state">State</label>
+                            <input type="text" class="form-control" id="state" placeholder="Enter your state" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="zip">Zip Code</label>
+                            <input type="text" class="form-control" id="zip" placeholder="Enter your zip code" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="zipPlus4">Zip+4 (optional)</label>
+                            <input type="text" class="form-control" id="zipPlus4" placeholder="Enter your zip+4 code">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="public/js/change-form-content.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
