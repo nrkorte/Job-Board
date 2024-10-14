@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Your Account</title>
+        <%- include('./templates/shared-header.ejs') %>
+        <link rel="stylesheet" href="../../styles/general.css">
+        <link rel="stylesheet" href="../../styles/sidebar.css">
+        <link rel="stylesheet" href="../../styles/infoform.css">
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker"></script>
+    </head>
+
+    <header>
+        <h1>User Information - Work History</h1>
+        <form action="/logout" method="post">
+            <button type="submit">Logout</button>
+        </form>
+    </header>
+
+    <body onload="validateWorkHistoryForm()">
+
+        <%- include('./templates/main-nav.ejs') %>
+        
+        <div class="scrollable">
+            <div class="flex-wrapper">
+                <aside>
+                    <%- include('./templates/information_nav.ejs') %> 
+                </aside>
+
+                <main>
+
+                    <span id="submit_success_message" <% if (successParam==='true' ) { %>style="display: inline; color: green;"<% }
+                        else { %>style="display: none;"<% } %>>
+                            Success!
+                    </span>
+
+                    <span id="submit_error_message" <% if (errorParam==='true' ) { %>style="display: inline; color: red;"<% } else {
+                            %>style="display: none;"<% } %>>
+                                Error!
+                    </span>
+
+                    <div id="error-box"></div>
+                </main>
+
+            </div>
+        </div>
+
+    </body>
+
+</html>

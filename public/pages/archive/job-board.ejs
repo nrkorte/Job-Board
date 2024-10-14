@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Board</title>
+    <%- include('./templates/shared-header.ejs') %>
+    <link rel="stylesheet" href="../../styles/board.css">
+</head>
+
+<header>
+    <h1>Korte Job Hosting - Job Board</h1>
+    <form action="/logout" method="post">
+        <button type="submit">Logout</button>
+    </form>
+</header>
+
+<body onload="validateFilterForm()">
+    <%- include('./templates/main-nav.ejs') %>
+    <div class="board-wrapper">
+            <aside class="left">
+                <h4>Filters</h4>
+                <hr>
+                <div class="scrollable">
+                    <form action="/submit" method="post" id="filter_form" oninput="validateFilterForm()">
+                        <div class="form-section">
+                            <label>Sort:</label>
+                            <div class="sort-buttons">
+                                <button type="button" data-sort="relevance" onclick="updateSort('relevance')" class="sort-option active">Relevance</button>
+                                <button type="button" data-sort="date_posted" onclick="updateSort('date_posted')" class="sort-option">Date Posted</button>
+                                <button type="button" data-sort="less_applicants" onclick="updateSort('less_applicants')" class="sort-option">Less Applicants</button>
+                                <button type="button" data-sort="more_applicants" onclick="updateSort('more_applicants')" class="sort-option">More Applicants</button>
+                                <button type="button" data-sort="distance" onclick="updateSort('distance')" class="sort-option">Distance</button>
+                            </div>
+                            <input type="hidden" name="sort" id="sort" value="relevance">
+                        </div><hr>
+                    
+                        <div class="form-section">
+                            <label for="distance">Distance:</label>
+                            <input type="range" id="distance" name="distance" min="25" max="200" value="30">
+                            <span id="distanceValue"> &lt; 30 miles</span>
+                        </div><hr>
+                    
+                        <div class="form-section">
+                            <label for="keywords">Keywords:</label>
+                            <input type="text" id="keywords" name="keywords" placeholder="Separate by comma">
+                        </div><hr>
+                    
+                        <div class="form-section">
+                            <label for="salaryMin">Salary:</label>
+                            <input type="number" id="salaryMin" name="salaryMin" min="0" max="300000" step="5000" placeholder="Min">
+                            
+                            <input type="number" id="salaryMax" name="salaryMax" min="0" max="300000" step="5000" placeholder="Max">
+                            
+                            <input type="hidden" id="hiddenSalaryMin" name="hiddenSalaryMin" value="0">
+                            <input type="hidden" id="hiddenSalaryMax" name="hiddenSalaryMax" value="300000">
+                        
+                        </div>
+                        <hr>
+                    
+                        <div class="form-section">
+                            <label>Job Type:</label>
+                            <div class="job-type-buttons">
+                                <button class="jobt_sort_option" type="button" onclick="toggleJobType('internship')">Internship</button>
+                                <button class="jobt_sort_option" type="button" onclick="toggleJobType('part-time')">Part-Time</button>
+                                <button class="jobt_sort_option" type="button" onclick="toggleJobType('full-time')">Full-Time</button>
+                                <button class="jobt_sort_option" type="button" onclick="toggleJobType('remote')">Remote</button>
+                            </div>
+                            <input type="hidden" name="job_type" id="jobType" value="">
+                            <button type="submit" id="filter_submit" onclick="updateSalaryRange()">Apply</button>
+                        </div>
+                    </form>
+                </div>
+            </aside>
+            <main>
+                <h4>List</h4>
+                <hr>
+                <div class="scrollable">
+                    
+                </div>
+                <div id="error-box"></div>
+            </main>
+            <aside class="right">
+                <h4>Description</h4>
+                <hr>
+                <div class="scrollable">
+                    
+                </div>
+            </aside>
+    </div>
+        
+
+</body>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const distanceInput = document.getElementById("distance");
+        const distanceValueSpan = document.getElementById("distanceValue");
+
+        distanceInput.addEventListener("input", function () {
+            const distance = distanceInput.value;
+            distanceValueSpan.textContent = `< ${distance} miles`;
+            console.log(distanceValueSpan.textContent.substring(2, distanceValueSpan.textContent.indexOf(" ")));
+        });
+    });
+
+    function updateSort(sortOption) {
+        const sortButtons = document.querySelectorAll('.sort-buttons button');
+        sortButtons.forEach(button => button.classList.remove('active'));
+
+        document.getElementById("sort").value = sortOption;
+        const activeButton = document.querySelector(`.sort-buttons button[data-sort="${sortOption}"]`);
+        if (activeButton) {
+            activeButton.classList.add('active');
+        }
+    }
+
+    function toggleJobType(jobType) {
+        const jobTypeInput = document.getElementById("jobType");
+        const currentJobTypes = jobTypeInput.value.split(',');
+
+        if (currentJobTypes.includes(jobType)) {
+            const updatedJobTypes = currentJobTypes.filter(type => type !== jobType);
+            jobTypeInput.value = updatedJobTypes.join(',');
+        } else {
+            jobTypeInput.value = [...currentJobTypes, jobType].join(',');
+        }
+    }
+
+    function updateSalaryRange() {
+        var salaryMin = document.getElementById('salaryMin').value;
+        var salaryMax = document.getElementById('salaryMax').value;
+        var hiddenSalaryMin = document.getElementById('hiddenSalaryMin');
+        var hiddenSalaryMax = document.getElementById('hiddenSalaryMax');
+
+        if (salaryMin && salaryMin <= salaryMax)
+            hiddenSalaryMin.value = salaryMin;
+        if (salaryMax && salaryMax > 0 && salaryMax >= salaryMin)
+            hiddenSalaryMax.value = salaryMax;
+
+        document.getElementById('salaryMax').value = hiddenSalaryMax.value;
+        document.getElementById('salaryMin').value = hiddenSalaryMin.value;
+
+    }
+</script>
+
+</html>

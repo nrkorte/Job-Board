@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Account</title>
+    <script src="/js/buttons-checkboxes.js"></script>
+    <%- include('./templates/shared-header.ejs') %>
+    <link rel="stylesheet" href="../../styles/sidebar.css">
+    <link rel="stylesheet" href="../../styles/job_preferences.css">
+    <link rel="stylesheet" href="../../styles/infoform.css">
+</head>
+
+<header>
+    <h1>User Information - Job Preferences</h1>
+    <form action="/logout" method="post">
+        <button type="submit">Logout</button>
+    </form>
+</header>
+
+<body onload="validateJobPreferencesForm()">
+    <%- include('./templates/main-nav.ejs') %> 
+    <div class="flex-wrapper">
+        <aside>
+            <%- include('./templates/information_nav.ejs') %>
+        </aside>
+
+        <main>
+
+            <span id="submit_success_message" <% if (successParam==='true' ) { %>style="display: inline; color: green;"<% }
+                else { %>style="display: none;"<% } %>>
+                    Success!
+            </span>
+
+            <span id="submit_error_message" <% if (errorParam==='true' ) { %>style="display: inline; color: red;"<% } else {
+                    %>style="display: none;"<% } %>>
+                        Error!
+            </span>
+            <form action="/submit" method="post" id="job_preferences_form" oninput="validateJobPreferencesForm()">
+
+                <fieldset>
+                    <legend>Job Type:</legend>
+                    <button type="button" class="job-type-button <%= userData.job_type && userData.job_type.includes('part-time') ? 'active' : '' %>"
+                            data-value="part-time" id="partTime" onclick="toggleCheckbox(this, 'jobTypeInput', 'part-time', true, 'job-type-button'); validateJobPreferencesForm()">Part Time</button>
+                    <button type="button" class="job-type-button <%= userData.job_type && userData.job_type.includes('full-time') ? 'active' : '' %>"
+                            data-value="full-time" id="fullTime" onclick="toggleCheckbox(this, 'jobTypeInput', 'full-time', true, 'job-type-button'); validateJobPreferencesForm()">Full Time</button>
+                    <button type="button" class="job-type-button <%= userData.job_type && userData.job_type.includes('internship') ? 'active' : '' %>"
+                            data-value="internship" id="internship" onclick="toggleCheckbox(this, 'jobTypeInput', 'internship', true, 'job-type-button'); validateJobPreferencesForm()">Internship</button>
+                  </fieldset>
+                  <input type="hidden" id="jobTypeInput" name="job_type" value="<%= userData.job_type %>">
+                  <fieldset>
+                    <legend>Work Location:</legend>
+                    <button type="button" class="job-rho-button <%= userData.job_type && userData.job_rho.includes('remote') ? 'active' : '' %>"
+                            data-value="remote" id="remote" onclick="toggleCheckbox(this, 'jobRhoInput', 'remote', true, 'job-rho-button'); validateJobPreferencesForm()">Remote</button>
+                    <button type="button" class="job-rho-button <%= userData.job_type && userData.job_rho.includes('hybrid') ? 'active' : '' %>"
+                            data-value="hybrid" id="hybrid" onclick="toggleCheckbox(this, 'jobRhoInput', 'hybrid', true, 'job-rho-button'); validateJobPreferencesForm()">Hybrid</button>
+                    <button type="button" class="job-rho-button <%= userData.job_type && userData.job_rho.includes('on-site') ? 'active' : '' %>"
+                            data-value="on-site" id="onsite" onclick="toggleCheckbox(this, 'jobRhoInput', 'on-site', true, 'job-rho-button'); validateJobPreferencesForm()">On-Site</button>
+                </fieldset>
+                <input type="hidden" id="jobRhoInput" name="job_rho" value="<%= userData.job_rho %>">
+
+                <label for="skillInput">Enter your skills:</label>
+                <input type="text" id="skillInput" placeholder="Enter skill...">
+                <div id="skillsList"></div>
+
+                <input type="hidden" name="sourcePage" value="job_preferences">
+                <button class="submit_button_100" type="submit" id="submitBtn_jobpreferences">Update Profile</button>
+            </form>
+            <div id="error-box"></div>
+        </main>
+    </div>
+
+    <script src="/js/skills-keywords.js"></script>
+</body>
+
+</html>

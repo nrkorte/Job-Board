@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Account</title>
+    <%- include('./templates/shared-header.ejs') %>
+    <link rel="stylesheet" href="../../styles/general.css">
+    <link rel="stylesheet" href="../../styles/sidebar.css">
+    <link rel="stylesheet" href="../../styles/infoform.css">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker"></script>
+</head>
+
+<header>
+    <h1>User Information - General</h1>
+    <form action="/logout" method="post">
+        <button type="submit">Logout</button>
+    </form>
+</header>
+
+<body onload="validateGeneralForm()">
+
+    <%- include('./templates/main-nav.ejs') %>
+
+    <div class="scrollable">
+        <div class="flex-wrapper">
+            <aside>
+                <%- include('./templates/information_nav.ejs') %> 
+            </aside>
+
+            <main>
+
+                <span id="submit_success_message" <% if (successParam==='true' ) { %>style="display: inline; color: green;"<% }
+                    else { %>style="display: none;"<% } %>>
+                        Success!
+                </span>
+
+                <span id="submit_error_message" <% if (errorParam==='true' ) { %>style="display: inline; color: red;"<% } else {
+                        %>style="display: none;"<% } %>>
+                            Error!
+                </span>
+                <form action="/submit" method="post" id="general_info_form" oninput="validateGeneralForm(); changeCss()">
+                    <label for="full_name">Name:</label>
+                    <input type="text" id="full_name" name="full_name" value="<%= userData.full_name || '' %>" required><br>
+
+                    <label for="birthdate">Birthdate:</label>
+                    <input type="text" id="birthdate" placeholder="YYYY-MM-DD" name="birthdate" value="<%= userData.birthdate || '' %>" required>
+
+                    <label for="address_one">Home Address Line 1:</label>
+                    <input type="text" id="address_one" name="address_one" value="<%= userData.address_one || '' %>" required><br>
+
+                    <label for="address_two">Home Address Line 2:</label>
+                    <input type="text" id="address_two" name="address_two" value="<%= userData.address_two || '' %>" placeholder="N/A if not applicable"><br>
+
+                    <label for="city">City:</label>
+                    <input type="text" id="city" name="city" value="<%= userData.city || '' %>"><br>
+
+                    <label for="state">State:</label>
+                    <input type="text" id="state" name="state" value="<%= userData.state || '' %>"><br>
+
+                    <label for="zipCode">Zip Code:</label>
+                    <input type="text" id="zip" name="zip" value="<%= userData.zip || '' %>"><br>
+
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" value="<%= userData.email || '' %>" required><br>
+
+                    <label for="phoneNumber">Phone Number:</label>
+                    <input type="tel" id="phoneNumber" name="phone" value="<%= userData.phone || '' %>"><br>
+
+                    <label for="preferredContactMethod">Preferred Method of Contact:</label>
+                    <select id="preferredContactMethod" name="preferred_contact">
+                        <option value="email" <%=userData.preferred_contact==='email' ? 'selected' : '' %>>Email</option>
+                        <option value="phone" <%=userData.preferred_contact==='phone' ? 'selected' : '' %>>Phone</option>
+                    </select><br>
+
+                    <input type="hidden" name="sourcePage" value="general">
+                    <button class="submit_button_100" type="submit" id="submitBtn_general">Update Profile</button>
+                </form>
+
+                <div id="error-box"></div>
+            </main>
+
+        </div>
+    </div>
+
+</body>
+
+<script>
+$(function() {
+    $('input[name="birthdate"]').daterangepicker({
+        singleDatePicker: true,
+        showDropdowns: true,
+        minYear: 1901,
+        maxYear: parseInt(moment().format('YYYY'), 10),
+        locale: {
+            format: "YYYY-MM-DD"
+        }
+    });
+});
+
+$(document).on('click', '.applyBtn', function() {
+        validateGeneralForm();
+    });
+</script>
+
+</html>

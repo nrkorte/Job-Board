@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Account</title>
+    <script src="/public/js/buttons-checkboxes.js"></script>
+    <%- include('./templates/shared-header.ejs') %>
+    <link rel="stylesheet" href="../../styles/sidebar.css">
+    <link rel="stylesheet" href="../../styles/infoform.css">
+</head>
+
+<header>
+    <h1>User Information - Demographics</h1>
+    <form action="/logout" method="post">
+        <button type="submit">Logout</button>
+    </form>
+</header>
+
+<body onload="validateDemographicForm()">
+    <%- include('./templates/main-nav.ejs') %> 
+
+    <div class="scrollable">
+    <div class="flex-wrapper">
+        <aside>
+            <%- include('./templates/information_nav.ejs') %>
+        </aside>
+
+        <main>
+
+            <span id="submit_success_message" <% if (successParam==='true' ) { %>style="display: inline; color: green;"<% }
+                else { %>style="display: none;"<% } %>>
+                    Success!
+            </span>
+
+            <span id="submit_error_message" <% if (errorParam==='true' ) { %>style="display: inline; color: red;"<% } else {
+                    %>style="display: none;"<% } %>>
+                        Error!
+            </span>
+            <form action="/submit" method="post" id="demographic_form" oninput="validateDemographicForm()">
+                <label for="sex">Sex:</label>
+                <select id="sex" name="sex" required>
+                    <option value="Choose" <%=userData.sex==='' ? 'selected' : '' %>>Choose</option>
+                    <option value="Male" <%=userData.sex==='Male' ? 'selected' : '' %>>Male</option>
+                    <option value="Female" <%=userData.sex==='Female' ? 'selected' : '' %>>Female</option>
+                    <option value="Other" <%=userData.sex==='Other' ? 'selected' : '' %>>Other</option>
+                </select><br>
+
+                <label for="canLegallyWork">Can you legally work in the United States?</label>
+                <div class="button-group">
+                    <input type="hidden" id="legalWorkInput" name="legal_work" value="<%= userData.legal_work || '' %>">
+                    <button id="legalWorkYes" type="button" class="legal-work-button <%= userData.legal_work === 'yes' ? 'active' : '' %>"
+                        data-value="yes" onclick="updateInputAndSetActive(this, 'legalWorkInput', 'yes', false, 'legal-work-button')">Yes</button>
+                    <button id="legalWorkNo" type="button" class="legal-work-button <%= userData.legal_work === 'no' ? 'active' : '' %>"
+                        data-value="no" onclick="updateInputAndSetActive(this, 'legalWorkInput', 'no', false, 'legal-work-button')">No</button>
+                </div>
+                
+                <fieldset>
+                    <legend>Ethnicity (Check One):</legend>
+                    <button type="button" class="ethnicity-btn" onclick="updateInputAndSetActive(this, 'ethnicity', 'Hispanic or Latino', false, 'ethnicity-btn')">Hispanic or Latino</button>
+                    <button type="button" class="ethnicity-btn" onclick="updateInputAndSetActive(this, 'ethnicity', 'Not Hispanic or Latino', false, 'ethnicity-btn')">Not Hispanic or Latino</button>
+                    <input type="hidden" name="ethnicity" id="ethnicity">
+                </fieldset>
+                
+                <label for="race">Race (Check all that apply):</label>
+                <div class="race-options">
+                    <input type="checkbox" id="raceNative" name="raceNative" value="American Indian or Alaska Native" <%= userData.race && userData.race.includes('American Indian or Alaska Native') ? 'checked' : '' %>>
+                    <label for="raceNative">American Indian or Alaska Native</label>
+                    
+                    <input type="checkbox" id="raceAsian" name="raceAsian" value="Asian" <%= userData.race && userData.race.includes('Asian') ? 'checked' : '' %>>
+                    <label for="raceAsian">Asian</label>
+                </div>
+                <input type="hidden" name="race" id="race">
+                
+                <fieldset>
+                    <legend>Disability/Serious Health Condition</legend>
+                    <p>The next questions address disability and serious health conditions. Your responses will ensure that our outreach and recruitment policies are reaching a wide range of individuals with physical or mental conditions. Consider your answers without the use of medication and aids (except eyeglasses) or the help of another person.</p>
+                    
+                    <p>A. Do you have any of the following? Check all boxes that apply to you:</p>
+                    <button type="button" class="disability-btn" onclick="toggleCheckbox(this, 'disabilityStatus', 'Deaf or serious difficulty hearing', true, 'disability-btn')">Deaf or serious difficulty hearing</button>
+                    <button type="button" class="disability-btn" onclick="toggleCheckbox(this, 'disabilityStatus', 'Blind or serious difficulty seeing even when wearing glasses', true, 'disability-btn')">Blind or serious difficulty seeing even when wearing glasses</button>
+                    <!-- Add remaining buttons here -->
+                    <input type="hidden" name="disabilityStatus" id="disabilityStatus">
+                    
+                    <p>If you did not select one of the options above, please indicate whether:</p>
+                    <button type="button" class="disability-btn" onclick="updateInputAndSetActive(this, 'disabilityStatus', 'None of the conditions listed above apply to me.', false, 'disability-btn')">None of the conditions listed above apply to me.</button>
+                    <button type="button" class="disability-btn" onclick="updateInputAndSetActive(this, 'disabilityStatus', 'I do not wish to answer questions regarding disability/health conditions.', false, 'disability-btn')">I do not wish to answer questions regarding disability/health conditions.</button>
+                    <input type="hidden" name="disabilityStatus" id="disabilityStatus">
+                    
+                    <p>If you have indicated that you have one of the above conditions, you may be eligible to apply under Schedule A Hiring Authority. For more information, please see <a href="http://www.opm.gov/policy-dataoversight/disability-employment/hiring/#url=Schedule-A-Hiring-Authority">Schedule-A-Hiring-Authority</a>.</p>
+                </fieldset>
+
+                <input type="hidden" name="sourcePage" value="demographics">
+                <button class="submit_button_100" type="submit" id="submitBtn_demographics">Update Profile</button>
+            </form>
+            <div id="error-box"></div>
+        </main>
+    </div>
+</div>
+
+</body>
+
+</html>

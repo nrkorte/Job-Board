@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
+</head>
+
+<body>
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-sm-8 col-md-6 col-lg-4 offset-sm-2 offset-md-3 offset-lg-4">
+                    <h1 class="mb-3 text-center">Create a new account</h1>
+                    <p class="lead text-center">Never have to re-type your CV information in again!</p>
+                    <form action="/submit" method="post" id="mainform">
+                        <div class="form-group">
+                            <label for="email">Email:</label>
+                            <input type="email" class="form-control" id="email" name="email" value="etroknick@gmail.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password:</label>
+                            <input type="password" class="form-control" id="password" name="password" value="Thermo2001!" required>
+                            <button style="font-size: small; padding-top: 1%; margin-top: 5px;" class="btn btn-secondary" id="toggle_show" type="button" onmouseup="toggleShowPassword();">Show Password</button>
+                        </div>
+                        <input type="hidden" name="sourcePage" value="createAccount">
+                        <button type="submit" class="btn btn-primary btn-block mb-3" id="submitBtn_new">Create account</button>
+                        <div class="alert alert-info small" role="alert">
+                            By clicking above you agree to our
+                            <a href="#" class="alert-link">Terms &amp; Conditions</a> and
+                            our <a href="#" class="alert-link">Privacy Policy</a>.
+                        </div>
+                        <div class="text-center">
+                            <p>Already have an account?</p>
+                        </div>
+                        <a href="/login" class="btn btn-primary btn-block mb-3" id="submitBtn_new">Sign in</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <% if (errorMessage && errorMessage !== 'undefined' && errorMessage !== 'null') { %>
+        <script>
+            const errorBox = document.createElement('div');
+            errorBox.classList.add("alert", "alert-danger");
+            errorBox.setAttribute("role", "alert");
+    
+            const errorMessageElement = document.createElement('p');
+            errorMessageElement.innerText = 'Error: <%= errorMessage %>';
+            errorMessageElement.style.color = 'rgb(0, 0, 0)';
+    
+            errorBox.appendChild(errorMessageElement);
+    
+            const form = document.getElementById('mainform');
+        
+            form.parentNode.insertBefore(errorBox, form);
+        </script>
+    <% } %>
+    
+    
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
+    
+    <script>
+        function toggleShowPassword() {
+            const passwordField = document.getElementById("password");
+            passwordField.type = passwordField.type === "password" ? "text" : "password";
+        }
+    </script>
+</body>
+
+</html>
